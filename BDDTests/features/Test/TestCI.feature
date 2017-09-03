@@ -6,24 +6,24 @@ Background:
    And I set up the database connections for "Ingest" - "CCDEV" environment for "chem" schema tables count
    And I set up the database connections for "Exposure" - "CCDEV" environment for "chem" schema tables count
 
-@testCount
-Scenario: Check the list of tables exists in a specific Chem domain area
+@testCountCI
+Scenario: Check the list of tables exists in a specific CI domain area
   When I execute following query for "Staging" Schema for table counting:
   """
-  Select owner,table_name from ALL_TAB_COLUMNS where owner='CHEM_PROC'
-  AND lower(table_name) IN ('ch_calc_properties_cax','ch_ddr_activity','ch_int_structure','ch_ddr_dcr')
+  Select owner,table_name from ALL_TAB_COLUMNS where owner='CI_PUBLIC_STAGING' AND
+  lower(table_name) IN ('jp_action_tree_ad','jp_patent_drug_compound','jp_patent_drug_compound_hlink','jp_patent_drug_compound_name','jp_pf_annotation_display','jp_pf_company')
   order by table_name
   """
   When I execute following query for "Ingest" Schema for table counting:
   """
-  SELECT table_schema, table_name as TableName from information_schema.tables where table_schema='chem_proc_ingest'
-  AND table_name IN ('ch_calc_properties_cax','ch_ddr_activity','ch_int_structure','ch_ddr_dcr')
+  SELECT table_schema, table_name as TableName from information_schema.tables where table_schema='cips_ingest'
+  AND table_name IN ('jp_action_tree_ad','jp_patent_drug_compound','jp_patent_drug_compound_hlink','jp_patent_drug_compound_name','jp_pf_annotation_display','jp_pf_company')
   order by table_name
   """
   When I execute following query for "Exposure" Schema for table counting:
   """
-  SELECT table_schema, table_name as TableName from information_schema.tables where table_schema='chem'
-  AND table_name IN ('ch_calc_properties_cax','ch_ddr_activity','ch_int_structure','ch_ddr_dcr')
+  SELECT table_schema, table_name as TableName from information_schema.tables where table_schema='ci_public'
+  AND table_name IN ('jp_action_tree_ad','jp_patent_drug_compound','jp_patent_drug_compound_hlink','jp_patent_drug_compound_name','jp_pf_annotation_display','jp_pf_company')
   order by table_name
   """
   Then I should get the counts of "Staging","Ingest" against "Exposure" in html format

@@ -2,6 +2,8 @@ import psycopg2
 import csv
 import datetime
 import cx_Oracle
+import os
+
 dbName=None
 dbUser=None
 dbHost=None
@@ -49,12 +51,14 @@ def connect_db(schema1='None',dbEnv1='None'):
         return None;
 
 def write_csv(context,diffList, diffSchema1ToSchema2FileName,domArea):
+    cwd = os.getcwd()
+    print("Current Directory : ===> : ",cwd)
     domainArea=domArea.title()
     print("-------------------In CSV------------ diffList:", diffList)
     dateTime = datetime.datetime.today().strftime('%d_%b_%Y_%H_%M_%S');
     diffFileName=diffSchema1ToSchema2FileName+'_'+dateTime+'.csv'
     try:
-        diffFile=open('.\\'+domainArea+'\\outputFiles\\'+diffFileName,'w',newline='')
+        diffFile=open(cwd+'\\BDDTests\\features\\'+domainArea+'\\outputFiles\\'+diffFileName,'w',newline='')
         writer=csv.writer(diffFile)
         writer.writerows(diffList)
         diffFile.close()
@@ -63,6 +67,8 @@ def write_csv(context,diffList, diffSchema1ToSchema2FileName,domArea):
         print("Can't write to the file {}",diffSchema1ToSchema2FileName);
         diffFile.close()
 def write_html(context,caption,tableList):
+    cwd = os.getcwd()
+    print("Current Directory : ===> : ", cwd)
     dateTime = datetime.datetime.today().strftime('%d_%b_%Y_%H_%M_%S');
     tableCaption = caption.title() +' Tables\'s Counts'
     tableList = tableList
@@ -100,7 +106,7 @@ def write_html(context,caption,tableList):
 
     htmlString = htmlString + """</table></body></head></html>"""
     print(htmlString)
-    file = '.\\'+caption+'\\outputFiles\\OutputFile_'+dateTime+'.htm';
+    file = cwd+'\\BDDTests\\features\\'+caption+'\\outputFiles\\OutputFile_'+dateTime+'.htm';
     writer = open(file, 'w')
     writer.write(htmlString);
     writer.close()
