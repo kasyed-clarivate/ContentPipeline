@@ -1,0 +1,66 @@
+<testsuite errors="0" failures="0" name="ChemIngestExposureTests.As a Chem User, I want to check structure of tables and its content in the Chem schema so I can use it confindentaly" skipped="0" tests="1" time="2.27913"><testcase classname="ChemIngestExposureTests.As a Chem User, I want to check structure of tables and its content in the Chem schema so I can use it confindentaly" name="Check the Chem Tables Count are Identical between Ingest Exposure" status="passed" time="2.27913"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @test2
+  Scenario: Check the Chem Tables Count are Identical between Ingest Exposure
+    Given I set up the database connections for "Ingest" on "CCDEV" environment ... passed in 0.788s
+    And I set up the database connections for "Exposure" on "CCDEV" environment ... passed in 0.680s
+    When I execute following query for "source" Schema ... passed in 0.396s
+      """
+      SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem_proc_ingest'
+      and table_name NOT LIKE '%log%'
+      """
+    When I execute following query for "target" Schema ... passed in 0.395s
+      """
+      SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem'
+      AND table_name NOT LIKE '%view%'
+      """
+    Then I should get the difference from "Source" to "Target" in "Chem_Ingest_Exposure_TableCount" csv file ... passed in 0.011s
+    And I should get the difference from "Target" to "Source" in "Chem_Exposure_Ingest_TableCount" csv file ... passed in 0.009s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+In Start of Setup <<--===COUNNECTION COUNT.... : 0
+<<<<<<<CCDEV Environment excuted..>>>>>>>>!!
+dbEnv : CCDEV  -- schema : Ingest
+++++++++++++++++++Connected to DB..!+++++++++++++++++
+COUNNECTION COUNT.... : 1
+In Start of Setup <<--===COUNNECTION COUNT.... : 1
+<<<<<<<CCDEV Environment excuted..>>>>>>>>!!
+dbEnv : CCDEV  -- schema : Exposure
+++++++++++++++++++Connected to DB..!+++++++++++++++++
+COUNNECTION COUNT.... : 2
+ColNames1 : ['tablecount']
+context.diffSourceToTarget ===>  [['tablecount']]
+Query : SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem_proc_ingest'
+and table_name NOT LIKE '%log%'
+Schema Name : source
+<<---------------End of I execute following query...------------------------->>
+ColNames2 : ['tablecount']
+context.diffTargetToSource ===>  [['tablecount']]
+Query : SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem'
+AND table_name NOT LIKE '%view%'
+Schema Name : target
+<<---------------End of I execute following query...------------------------->>
+In Last Step ---- context.diffSourceToTarget ===>  [['tablecount']]
+In Last Step ---- context.diffTargetToSource ===>  [['tablecount']]
+diffSchema1 ------------->>>>>>>> Source
+diffSchema2 ------------->>>>>>>> Target
+context.listSource : [(41,)]
+~~~~~~~Length of DiffSourceToTarget--~~~~~~----> diffSourceToTarget :  1
+-------------------In CSV------------ diffList: [['tablecount']]
+-------------------End of CSV------------ diffList:
+In Last Step ---- context.diffSourceToTarget ===>  [['tablecount']]
+In Last Step ---- context.diffTargetToSource ===>  [['tablecount']]
+diffSchema1 ------------->>>>>>>> Target
+diffSchema2 ------------->>>>>>>> Source
+context.listTarget : [(41,)]
+~~~~~~~Length of diffTargetToSource--~~~~~~----> diffTargetToSource :  [['tablecount']]
+-------------------In CSV------------ diffList: [['tablecount']]
+-------------------End of CSV------------ diffList:
+
+]]>
+</system-out></testcase></testsuite>
