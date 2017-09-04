@@ -58,7 +58,9 @@ def write_csv(context,diffList, diffSchema1ToSchema2FileName,domArea):
     dateTime = datetime.datetime.today().strftime('%d_%b_%Y_%H_%M_%S');
     diffFileName=diffSchema1ToSchema2FileName+'_'+dateTime+'.csv'
     try:
-        diffFile=open(cwd+'\\BDDTests\\features\\'+domainArea+'\\outputFiles\\'+diffFileName,'w',newline='')
+        if(not os.path.exists(cwd+"\\outputFiles\\"+domainArea)):
+            os.makedirs(cwd+"\\outputFiles\\"+domainArea)
+        diffFile=open(cwd+'\\outputFiles\\'+domainArea+'\\'+diffFileName,'w',newline='')
         writer=csv.writer(diffFile)
         writer.writerows(diffList)
         diffFile.close()
@@ -72,7 +74,7 @@ def write_html(context,caption,tableList):
     dateTime = datetime.datetime.today().strftime('%d_%b_%Y_%H_%M_%S');
     tableCaption = caption.title() +' Tables\'s Counts'
     tableList = tableList
-    print("tableList[0][0]", tableList[0][1])
+#    print("tableList[0][0]", tableList[0][1])
     htmlString = """<html><head>
     <style> body {padding: 20px; background-color: snow;}
     caption   {padding-bottom:10px; font-weight:bold; border-collapse:collapse; color:blue; border-color: black;}
@@ -106,7 +108,11 @@ def write_html(context,caption,tableList):
 
     htmlString = htmlString + """</table></body></head></html>"""
     print(htmlString)
-    file = cwd+'\\BDDTests\\features\\'+caption+'\\outputFiles\\OutputFile_'+dateTime+'.htm';
-    writer = open(file, 'w')
+    #if (not os.path.exists(cwd + "..\\outputFiles\\" + caption)):
+    if (not os.path.exists(cwd+"\\outputFiles\\" + caption)):
+        os.makedirs(cwd+"\\outputFiles\\" + caption)
+    htmlFile =cwd+'\\outputFiles\\' + caption + '\\' +'\\TablesRowCount' + dateTime + '.htm';
+    print("htmFile****----->>> :",htmlFile)
+    writer = open(htmlFile, 'w')
     writer.write(htmlString);
     writer.close()
