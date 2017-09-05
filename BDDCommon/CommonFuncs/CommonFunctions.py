@@ -50,13 +50,13 @@ def connect_db(schema1='None',dbEnv1='None'):
         con.close();
         return None;
 
-def write_csv(context,diffList, diffSchema1ToSchema2FileName,domArea):
+def write_csv(context,diffList, csvFileName,domArea):
     cwd = os.getcwd()
-    print("Current Directory : ===> : ",cwd)
-    domainArea=domArea.title()
-    print("-------------------In CSV------------ diffList:", diffList)
     dateTime = datetime.datetime.today().strftime('%d_%b_%Y_%H_%M_%S');
-    diffFileName=diffSchema1ToSchema2FileName+'_'+dateTime+'.csv'
+    domainArea = domArea.title()
+    diffFileName=domArea+'_'+context.source+'_'+context.target+'_'+csvFileName+'_'+dateTime+'.csv'
+    print("Current Directory : ===> : ",cwd)
+    print("-------------------In CSV------------ diffList:", diffList)
     try:
         if(not os.path.exists(cwd+"\\outputFiles\\"+domainArea)):
             os.makedirs(cwd+"\\outputFiles\\"+domainArea)
@@ -66,7 +66,7 @@ def write_csv(context,diffList, diffSchema1ToSchema2FileName,domArea):
         diffFile.close()
         print("-------------------End of CSV------------ diffList:")
     except Exception as e:
-        print("Can't write to the file {}",diffSchema1ToSchema2FileName);
+        print("Can't write to the file {}",csvFileName);
         diffFile.close()
 def write_html(context,caption,tableList):
     cwd = os.getcwd()

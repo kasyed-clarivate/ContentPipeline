@@ -1,4 +1,4 @@
-
+@chem @chemRowCount @rowCount
 Feature: As a Ontology User, I want to check table structure tests
 
 Background:
@@ -6,7 +6,6 @@ Background:
    And I set up the database connections for "Ingest" - "CCDEV" environment for "chem" schema tables count
    And I set up the database connections for "Exposure" - "CCDEV" environment for "chem" schema tables count
 
-@rowCount
 Scenario: Check the list of tables exists in a specific Chem domain area
   When I execute following query for "Staging" Schema for table counting:
   """

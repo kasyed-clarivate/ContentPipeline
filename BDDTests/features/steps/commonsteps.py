@@ -1,11 +1,15 @@
 from behave import given, when, then
-from BDDCommon.CommonFuncs import CommonFunctions;
+from BDDCommon.CommonFuncs import CommonFunctions
 # import BDDCommon.CommonFuncs.CommonFunctions;
 import pdb;
 
 @given(u'I set up the database connection for "{schema}" on "{dbEnv}" environment for "{domArea1}" schema')
 def I_setup_the_database_connections_for_Oracle(context, schema, dbEnv,domArea1):
-    context.domArea1 = domArea1;
+    context.domArea1 = domArea1
+    if(context.source is None):
+        context.source=schema
+    else:
+        context.target=schema
     print("In Start of Setup <<--===COUNNECTION COUNT.... :", context.conCount)
     if (context.conCount == 0):
         context.source_con = CommonFunctions.connect_db(schema, dbEnv)
@@ -14,11 +18,6 @@ def I_setup_the_database_connections_for_Oracle(context, schema, dbEnv,domArea1)
     context.conCount += 1
     print("COUNNECTION COUNT.... :", context.conCount)
 
-# @given(u'I set up the database connection for "{schema1}" on "{dbEnv1}" environment for "{domaArea1}" schema')
-# def I_setup_the_database_connections_for_Oracle_for_Schema(context, schema1, dbEnv1, domaArea1):
-#     context.domArea1=domaArea1;
-#     I_setup_the_database_connections_for_Oracle(context, schema1, dbEnv1)
-    #context.execute_steps(u'''I set up the database connections for "{schema1}" on "{dbEnv1}" environment'''.format(schema1,dbEnv1))
 ##----------------------------------------------------------------------------------------------------------------------------
 @when(u'I execute following query for "{executeSchema}" Schema')
 def I_execute_following_query_for_Schema(context, executeSchema):
@@ -57,9 +56,8 @@ def I_execute_following_query_for_Schema(context, executeSchema):
 
 
 ####------------------------------------------------------------------------------------------------------------------------------
-@then(u'I should get the difference from "{diffSchema1}" minus "{diffSchema2}" in "{diffSchema1ToSchema2FileName}" csv file')
-def I_should_get_the_difference_from_schema1_to_schema2_in_csv_file(context, diffSchema1, diffSchema2,
-                                                                    diffSchema1ToSchema2FileName):
+@then(u'I should get the difference from "{diffSchema1}" minus "{diffSchema2}" in "{csvFileName}" csv file')
+def I_should_get_the_difference_from_schema1_to_schema2_in_csv_file(context, diffSchema1, diffSchema2, csvFileName):
     print("In Last Step ---- context.diffSourceToTarget ===> ", context.diffSourceToTarget)
     print("In Last Step ---- context.diffTargetToSource ===> ", context.diffTargetToSource)
 
@@ -78,7 +76,7 @@ def I_should_get_the_difference_from_schema1_to_schema2_in_csv_file(context, dif
             if (isPresent == 0):
                 context.diffSourceToTarget.append(row_ing)
         print("~~~~~~~Length of DiffSourceToTarget--~~~~~~----> diffSourceToTarget : ", len(context.diffSourceToTarget))
-        CommonFunctions.write_csv(context, context.diffSourceToTarget, diffSchema1ToSchema2FileName,context.domArea1)
+        CommonFunctions.write_csv(context, context.diffSourceToTarget, csvFileName,context.domArea1)
         assert len(context.diffSourceToTarget) <= 1, "There are differences between source to Target..!!"
     elif ((diffSchema1.lower()) == "target"):
         print("context.listTarget :", context.listTarget)
@@ -93,7 +91,7 @@ def I_should_get_the_difference_from_schema1_to_schema2_in_csv_file(context, dif
             if (isPresent == 0):
                 context.diffTargetToSource.append(row_exp)
         print("~~~~~~~Length of diffTargetToSource--~~~~~~----> diffTargetToSource : ", context.diffTargetToSource)
-        CommonFunctions.write_csv(context, context.diffTargetToSource, diffSchema1ToSchema2FileName,context.domArea1)
+        CommonFunctions.write_csv(context, context.diffTargetToSource, csvFileName,context.domArea1)
         assert len(context.diffTargetToSource) <= 1, "There are differences between target to source..!!"
     else:
         print("Oracle Schema...Not implemented Yet..!")

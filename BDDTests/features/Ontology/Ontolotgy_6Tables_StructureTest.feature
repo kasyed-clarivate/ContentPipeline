@@ -1,11 +1,11 @@
-
+@ontology
 Feature: As a Ontology User, I want to check table structure tests in STABLE_STAGING and CCDEV_CCDB
          so that I can use them confidently
  Background:
    Given I set up the database connections for "STAGING" on "STABLE" environment
    And I set up the database connections for "INGEST" on "CCDEV" environment
- 
- @tableExistCheck
+
+ @ontologyTableNames @TableNames
  Scenario: Check the list of Ontology 6tables exists in Stable Staging VS CCDEV
    When I execute following query for "source" Schema:
    """
@@ -22,7 +22,7 @@ Feature: As a Ontology User, I want to check table structure tests in STABLE_STA
    Then I should get the difference from "Source" to "Target" in "Ontology_Staging_CCDEV_TablesExists" csv file
    And I should get the difference from "Target" to "Source" in "Ontology_CCDEV_Staging_TablesExists" csv file
 
- @colCountCheck
+ @ontologyColumnCount @ColumnCount
  Scenario: Check the list of Ontology Column Counts in Stable Staging VS CCDEV
    Given I set up the database connections for "Staging" on "STABLE" environment
    And I set up the database connections for "Ingest" on "CCDEV" environment
@@ -42,7 +42,7 @@ Feature: As a Ontology User, I want to check table structure tests in STABLE_STA
    And I should get the difference from "Target" to "Source" in "Ontology_CCDEV_Staging_ColCount" csv file
 
 
- @colNamesCheck
+ @ontologyColumnNames @ColumnNames
  Scenario: Check the list of Ontology tables for Column Names Check in Stable Staging VS CCDEV
    Given I set up the database connections for "Staging" on "STABLE" environment
    And I set up the database connections for "Ingest" on "CCDEV" environment

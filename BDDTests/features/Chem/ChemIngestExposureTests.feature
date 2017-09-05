@@ -1,11 +1,11 @@
-
+@chem @chemIngestExposure
 Feature: As a Chem User, I want to check structure of tables and its content in the Chem schema so I can use it confindentaly
 
 Background:
   Given I set up the database connection for "Ingest" on "CCDEV" environment for "Chem" schema
   And I set up the database connection for "Exposure" on "CCDEV" environment for "Chem" schema
 
-@chemTableCount
+@chemTableCount @TableCount
 Scenario: Check the Chem Tables Count are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -17,10 +17,10 @@ Scenario: Check the Chem Tables Count are Identical between Ingest Exposure
   SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem'
   AND table_name NOT LIKE '%view%'
   """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_TableCount" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_TableCount" csv file
+  Then I should get the difference from "Source" minus "Target" in "TableCounts" csv file
+  And I should get the difference from "Target" minus "Source" in "TableCounts" csv file
 
-@chemTableNames
+@chemTableNames @TableNames
 Scenario: Check the Chem Tables Names List are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -32,10 +32,10 @@ Scenario: Check the Chem Tables Names List are Identical between Ingest Exposure
   SELECT table_name as TableName FROM information_schema.tables where table_schema='chem'
   AND table_name NOT LIKE '%view%'
   """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_TableCount" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_TableCount" csv file
+  Then I should get the difference from "Source" minus "Target" in "TableNames" csv file
+  And I should get the difference from "Target" minus "Source" in "TableNames" csv file
 
-@chemColumnsCount
+@chemColumnsCount @ColumnsCount
 Scenario: Check the Chem Column Counts are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -47,11 +47,11 @@ Scenario: Check the Chem Column Counts are Identical between Ingest Exposure
   Select table_name,Count(*) ColumnCount  from information_schema.columns where table_schema='chem' AND table_name NOT LIKE '%view%'
   and column_name NOT LIKE 'acn' GROUP BY table_name Order By table_name
   """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_ColCount" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_ColCount" csv file
+  Then I should get the difference from "Source" minus "Target" in "ColCount" csv file
+  And I should get the difference from "Target" minus "Source" in "ColCount" csv file
 
 
-@chemColumnsNames
+@chemColumnsNames @ColumnsNames
 Scenario: Check the List of Column Names in all tables are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -63,5 +63,5 @@ Scenario: Check the List of Column Names in all tables are Identical between Ing
   Select table_name TableName, column_name as ColumnName from information_schema.columns where table_schema='chem' AND table_name NOT LIKE '%view%'
   and column_name NOT LIKE 'acn' Order By TableName,ColumnName
   """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_ColNames" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_ColNames" csv file
+  Then I should get the difference from "Source" minus "Target" in "ColNames" csv file
+  And I should get the difference from "Target" minus "Source" in "ColNames" csv file

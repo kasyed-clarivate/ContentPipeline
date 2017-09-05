@@ -1,11 +1,12 @@
-
-Feature: As a Chem User, I want to check structure of tables and its content in the Chem schema so I can use it confindentaly
+@chem
+Feature: As a Chem User, I want to check structure of tables and its content in the Chem schema from Staging stable to CCDEV_Ingest
+so I can use it confindentaly
 
 Background:
   Given I set up the database connection for "Staging" on "STABLE" environment for "Chem" schema
-  And I set up the database connection for "Exposure" on "CCDEV" environment for "Chem" schema
+  And I set up the database connection for "Ingest" on "CCDEV" environment for "Chem" schema
 
-@chemTableCountOra
+@chemTableCountOra @TableCount
 Scenario: Check the Chem Tables Count are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -17,10 +18,10 @@ Scenario: Check the Chem Tables Count are Identical between Ingest Exposure
   SELECT Count(table_name) as TableCount FROM information_schema.tables where table_schema='chem_proc_ingest'
   and table_name NOT LIKE '%log%'
   """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_TableCount" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_TableCount" csv file
+  Then I should get the difference from "Source" minus "Target" in "TableCount" csv file
+  And I should get the difference from "Target" minus "Source" in "TableCount" csv file
 
-@chemTableNamesOra
+@chemTableNamesOra @TableNames
 Scenario: Check the Chem Tables Names List are Identical between Ingest Exposure
   When I execute following query for "source" Schema:
   """
@@ -32,5 +33,5 @@ Scenario: Check the Chem Tables Names List are Identical between Ingest Exposure
   """
   SELECT table_name as TableName from information_schema.tables where table_schema='chem_proc_ingest'
   AND table_name NOT LIKE '%log%' """
-  Then I should get the difference from "Source" minus "Target" in "Chem_Ingest_Exposure_TableCount" csv file
-  And I should get the difference from "Target" minus "Source" in "Chem_Exposure_Ingest_TableCount" csv file
+  Then I should get the difference from "Source" minus "Target" in "TableNames" csv file
+  And I should get the difference from "Target" minus "Source" in "TableNames" csv file
